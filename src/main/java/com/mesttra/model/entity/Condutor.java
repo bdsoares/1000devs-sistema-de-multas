@@ -20,7 +20,7 @@ public class Condutor {
     @Column(nullable = false)
     private int pontuacao;
 
-    @OneToOne(mappedBy = "condutor", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "condutor")
     private Veiculo veiculo;
 
     public Condutor(String nroCnh, LocalDate dataEmissao, String orgaoEmissor, int pontuacao) {
@@ -31,6 +31,10 @@ public class Condutor {
     }
 
     public Condutor() { }
+
+    public String getNroCnh() {
+        return nroCnh;
+    }
 
     public void setDataEmissao(LocalDate dataEmissao) {
         this.dataEmissao = dataEmissao;
@@ -55,7 +59,7 @@ public class Condutor {
         sb.append(this.pontuacao);
 
         if (this.veiculo != null) {
-            sb.append("\nVeículo: ");
+            sb.append("\n\tVeículo: ");
             sb.append(this.veiculo.getPlaca());
         }
 

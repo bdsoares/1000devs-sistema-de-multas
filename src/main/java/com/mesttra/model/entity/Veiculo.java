@@ -18,12 +18,20 @@ public class Veiculo {
     @Column(nullable = false)
     private String marca;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "cnh_condutor", referencedColumnName = "nro_cnh")
     private Condutor condutor;
 
-    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.PERSIST)
     private List<Multa> multas;
+
+    public Veiculo(String placa, int ano, String modelo, String marca, Condutor condutor) {
+        this.placa = placa;
+        this.ano = ano;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.condutor = condutor;
+    }
 
     public Veiculo() {
     }
@@ -74,5 +82,30 @@ public class Veiculo {
 
     public void setMultas(List<Multa> multas) {
         this.multas = multas;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Placa: ");
+        sb.append(this.placa);
+        sb.append("\n\tAno: ");
+        sb.append(this.ano);
+        sb.append("\n\tModelo: ");
+        sb.append(this.modelo);
+        sb.append("\n\tMarca: ");
+        sb.append(this.marca);
+
+        if (this.condutor != null) {
+            sb.append("\n\tCondutor: ");
+            sb.append(this.condutor.getNroCnh());
+        }
+
+        if (this.multas != null) {
+            sb.append("\n\tMultas: ");
+            sb.append(this.multas);
+        }
+
+        return sb.toString();
     }
 }

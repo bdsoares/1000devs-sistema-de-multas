@@ -1,6 +1,7 @@
 package com.mesttra;
 
 import com.mesttra.controller.CondutorController;
+import com.mesttra.controller.VeiculoController;
 
 import java.util.Scanner;
 
@@ -56,7 +57,11 @@ public class SistemaMultas {
                         condutorController.buscarTodos();
                         System.out.println("# =============================== #");
                     }
-                    case 0 -> System.out.println();
+                    case 0 -> {
+                        condutorController.close();
+                        condutorController = null;
+                        System.out.println();
+                    }
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } catch (Exception e) {
@@ -66,11 +71,55 @@ public class SistemaMultas {
     }
 
     private static void veiculo(Scanner in) {
+        VeiculoController veiculoController = new VeiculoController();
         int opcao = -1;
 
         do {
-            opcao = menuVeiculo(in);
-        } while (opcao == 0);
+            try {
+                opcao = menuVeiculo(in);
+                switch (opcao) {
+                    case 1 -> {
+                        System.out.println("** Cadastrar veículo **");
+                        veiculoController.salvar(in);
+                        System.out.println("Veículo cadastrado com sucesso!");
+                    }
+                    case 2 -> {
+                        System.out.println("** Atualizar veículo **");
+
+                        if (veiculoController.atualizar(in))
+                            System.out.println("Veículo atualizado com sucesso!");
+                    }
+                    case 3 -> {
+                        System.out.println("** Excluir veículo **");
+
+                        if (veiculoController.excluir(in))
+                            System.out.println("Veículo excluído com sucesso!");
+                    }
+                    case 4 -> {
+                        System.out.println("** Buscar veículo por placa **");
+                        veiculoController.buscar(in);
+                    }
+                    case 5 -> {
+                        System.out.println("# ===== Lista de Veículos ===== #");
+                        veiculoController.buscarTodos();
+                        System.out.println("# ============================= #");
+                    }
+                    case 6 -> {
+                        System.out.println("** Transferência de Veiculo **");
+                        if (veiculoController.transfereVeiculo(in))
+                            System.out.println("Veículo transferido com sucesso!");
+                    }
+                    case 0 -> {
+                        veiculoController.close();
+                        veiculoController = null;
+                        System.out.println();
+                    }
+                    default -> System.out.println("Opção inválida! Tente novamente.");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        } while (opcao != 0);
     }
 
     private static void multa(Scanner in) {
@@ -78,7 +127,7 @@ public class SistemaMultas {
 
         do {
             opcao = menuMulta(in);
-        } while (opcao == 0);
+        } while (opcao != 0);
     }
 
     private static int menu(Scanner in) {
@@ -108,10 +157,11 @@ public class SistemaMultas {
     private static int menuVeiculo(Scanner in) {
         System.out.println("# ===== Opções Veículo ===== #");
         System.out.println("1 - Cadastrar Veículo");
-        System.out.println("2 - Consultar Veículo");
-        System.out.println("3 - Alterar Veículo");
-        System.out.println("4 - Excluir Veículo");
-        System.out.println("5 - Transferir Veículo");
+        System.out.println("2 - Atualizar Veículo");
+        System.out.println("3 - Excluir Veículo");
+        System.out.println("4 - Consultar Veículo");
+        System.out.println("5 - Lista de Veículos");
+        System.out.println("6 - Transferir Veículo");
         System.out.println("0 - Voltar");
         System.out.println("# ========================== #");
         System.out.print("Digite a opção desejada: ");

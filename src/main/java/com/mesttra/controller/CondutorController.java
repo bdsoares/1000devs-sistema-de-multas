@@ -59,7 +59,7 @@ public class CondutorController {
         }
     }
 
-    private Condutor buscaCondutor(Scanner in) {
+    public Condutor buscaCondutor(Scanner in) {
         System.out.print("Número da CNH: ");
         String nroCnh = in.nextLine();
 
@@ -68,5 +68,9 @@ public class CondutorController {
             throw new CondutorException("Condutor não encontrado");
 
         return condutor;
+    }
+
+    public void close() {
+        dao.close();
     }
 }

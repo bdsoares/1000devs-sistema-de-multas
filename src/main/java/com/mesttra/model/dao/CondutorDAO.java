@@ -7,7 +7,7 @@ import jakarta.persistence.Persistence;
 import java.util.List;
 
 public class CondutorDAO {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public CondutorDAO() {
         this.entityManager = Persistence.createEntityManagerFactory("multas").createEntityManager();
@@ -39,4 +39,7 @@ public class CondutorDAO {
         return this.entityManager.createQuery("SELECT c FROM Condutor c", Condutor.class).getResultList();
     }
 
+    public void close() {
+        this.entityManager.close();
+    }
 }
