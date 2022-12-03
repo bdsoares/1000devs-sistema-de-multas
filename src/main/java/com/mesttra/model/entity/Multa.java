@@ -1,4 +1,4 @@
-package com.mesttra.entity;
+package com.mesttra.model.entity;
 
 import jakarta.persistence.*;
 
