@@ -1,13 +1,14 @@
 package com.mesttra;
 
 import com.mesttra.controller.CondutorController;
+import com.mesttra.controller.MultaController;
 import com.mesttra.controller.VeiculoController;
 
 import java.util.Scanner;
 
 public class SistemaMultas {
     public static void main(String[] args) {
-        int opcao = -1;
+        int opcao;
         Scanner in = new Scanner(System.in);
 
         do {
@@ -123,10 +124,49 @@ public class SistemaMultas {
     }
 
     private static void multa(Scanner in) {
+        MultaController multaController = new MultaController();
         int opcao = -1;
 
         do {
-            opcao = menuMulta(in);
+            try {
+                opcao = menuMulta(in);
+                switch (opcao) {
+                    case 1 -> {
+                        System.out.println("** Cadastrar multa **");
+                        multaController.salvar(in);
+                        System.out.println("Multa cadastrada com sucesso!");
+                    }
+                    case 2 -> {
+                        System.out.println("** Atualizar multa **");
+
+                        if (multaController.atualizar(in))
+                            System.out.println("Multa atualizada com sucesso!");
+                    }
+                    case 3 -> {
+                        System.out.println("** Excluir multa **");
+
+                        if (multaController.excluir(in))
+                            System.out.println("Multa excluída com sucesso!");
+                    }
+                    case 4 -> {
+                        System.out.println("** Buscar multas por veiculo **");
+                        multaController.busca(in);
+                    }
+                    case 5 -> {
+                        System.out.println("# ===== Lista de Multas ===== #");
+                        multaController.buscaTodos();
+                        System.out.println("# =========================== #");
+                    }
+                    case 0 -> {
+                        multaController.close();
+                        multaController = null;
+                        System.out.println();
+                    }
+                    default -> System.out.println("Opção inválida! Tente novamente.");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
         } while (opcao != 0);
     }
 
@@ -171,9 +211,10 @@ public class SistemaMultas {
     private static int menuMulta(Scanner in) {
         System.out.println("# ===== Opções Multa ===== #");
         System.out.println("1 - Cadastrar Multa");
-        System.out.println("2 - Consultar Multa");
-        System.out.println("3 - Alterar Multa");
-        System.out.println("4 - Excluir Multa");
+        System.out.println("2 - Atualizar Multa");
+        System.out.println("3 - Remover Multa");
+        System.out.println("4 - Consultar Veículo");
+        System.out.println("5 - Lista de Multas");
         System.out.println("0 - Voltar");
         System.out.println("# ======================== #");
         System.out.print("Digite a opção desejada: ");

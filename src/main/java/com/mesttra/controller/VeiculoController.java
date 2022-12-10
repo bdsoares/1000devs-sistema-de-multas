@@ -1,6 +1,5 @@
 package com.mesttra.controller;
 
-import com.mesttra.exceptions.CondutorException;
 import com.mesttra.exceptions.VeiculoException;
 import com.mesttra.model.dao.VeiculoDAO;
 import com.mesttra.model.entity.Veiculo;
@@ -11,8 +10,6 @@ public class VeiculoController {
     private final VeiculoDAO dao = new VeiculoDAO();
 
     public void salvar(Scanner in) {
-        CondutorController condutorController = new CondutorController();
-
         System.out.print("Placa do veículo: ");
         String placa = in.nextLine();
 
@@ -27,7 +24,9 @@ public class VeiculoController {
         String marca = in.nextLine();
         System.out.print("[Condutor] ");
 
+        CondutorController condutorController = new CondutorController();
         dao.salvar(new Veiculo(placa, ano, modelo, marca, condutorController.buscaCondutor(in)));
+        condutorController.close();
     }
 
     public boolean atualizar(Scanner in) {

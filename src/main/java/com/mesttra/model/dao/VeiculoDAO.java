@@ -36,7 +36,7 @@ public class VeiculoDAO {
     }
 
     public List<Veiculo> buscarTodos() {
-        return this.entityManager.createQuery("SELECT v FROM Veiculo v", Veiculo.class).getResultList();
+        return this.entityManager.createQuery("SELECT v FROM veiculos v", Veiculo.class).getResultList();
     }
 
     public void close() {

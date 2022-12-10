@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
+@Entity(name = "veiculos")
 public class Veiculo {
     @Id
     private String placa;
@@ -18,11 +18,11 @@ public class Veiculo {
     @Column(nullable = false)
     private String marca;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cnh_condutor", referencedColumnName = "nro_cnh")
     private Condutor condutor;
 
-    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "veiculo")
     private List<Multa> multas;
 
     public Veiculo(String placa, int ano, String modelo, String marca, Condutor condutor) {
@@ -40,28 +40,12 @@ public class Veiculo {
         return placa;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
     public void setAno(int ano) {
         this.ano = ano;
     }
 
-    public String getModelo() {
-        return modelo;
-    }
-
     public void setModelo(String modelo) {
         this.modelo = modelo;
-    }
-
-    public String getMarca() {
-        return marca;
     }
 
     public void setMarca(String marca) {
@@ -74,14 +58,6 @@ public class Veiculo {
 
     public void setCondutor(Condutor condutor) {
         this.condutor = condutor;
-    }
-
-    public List<Multa> getMultas() {
-        return multas;
-    }
-
-    public void setMultas(List<Multa> multas) {
-        this.multas = multas;
     }
 
     public String toString() {
@@ -102,8 +78,8 @@ public class Veiculo {
         }
 
         if (this.multas != null) {
-            sb.append("\n\tMultas: ");
-            sb.append(this.multas);
+            sb.append("\n\tTotal de multas: ");
+            sb.append(this.multas.size());
         }
 
         return sb.toString();

@@ -36,7 +36,7 @@ public class CondutorDAO {
     }
 
     public List<Condutor> buscarTodos() {
-        return this.entityManager.createQuery("SELECT c FROM Condutor c", Condutor.class).getResultList();
+        return this.entityManager.createQuery("SELECT c FROM condutores c", Condutor.class).getResultList();
     }
 
     public void close() {

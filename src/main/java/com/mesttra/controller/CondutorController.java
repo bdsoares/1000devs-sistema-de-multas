@@ -40,8 +40,14 @@ public class CondutorController {
 
     public boolean excluir(Scanner in) {
         Condutor condutor = buscaCondutor(in);
-        dao.excluir(condutor);
-        return true;
+
+        System.out.printf("Deseja realmente remover o condutor %s (S/N)? ", condutor.getNroCnh());
+        if (in.nextLine().equalsIgnoreCase("S")) {
+            dao.excluir(condutor);
+            return true;
+        }
+
+        return false;
     }
 
     public void buscar(Scanner in) {
@@ -68,6 +74,11 @@ public class CondutorController {
             throw new CondutorException("Condutor não encontrado");
 
         return condutor;
+    }
+
+    public void contabilizaMultas(Condutor condutor, int pontuacao) {
+        condutor.setPontuacao(condutor.getPontuacao() + pontuacao);
+        dao.atualizar(condutor);
     }
 
     public void close() {
