@@ -1,0 +1,75 @@
+# Pesquisa
+Pesquise sobre as propriedades fetch, cascade e optional que podem estar presentes nas anotações de relacionamentos. Insira dentro do seu projeto um arquivo txt em que você escreve o seu entendimento sobre elas.
+
+## 1) FETCH
+- Lazy Loading
+O Lazy loading que é o mais comum de ser encontrado nos mapeamentos realizados pelo Hibernate, afinal, todos os mapeamentos do Hibernate são Lazy por padrão, se você não especificar o tipo de “fetch” (busca) que será realizada.
+O Lazy Loading faz com que determinados objetos não sejam carregados do banco até que você precise deles, ou seja, são carregados 'on demand' (apenas quando você solicitar explicitamente o carregamento destes).
+
+Exemplo: 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+
+- Eager Loading
+Oposto ao Lazy Loading, o Eager Loading carrega os dados mesmo que você não vá utilizá-los, mas é recomendado utilizar esta técnica se de fato você for precisar com muita frequência dos dados carregados.
+
+O Eager pode ser feito de 2 formas: através de anotação na classe ou através do HQL.
+
+Exemplos:
+
+    // Através de anotações
+	@ManyToOne(fetch = FetchType.EAGER)
+
+	// Através de HQL	
+	“SELECT * FROM Funcionario f
+         	JOIN FETCH f.endereco
+         	JOIN FETCH f.contato
+         	JOIN FETCH f.funcao
+         	JOIN FETCH f.departamento”
+
+fonte: 
+
+    https://www.devmedia.com.br/lazy-e-eager-loading-com-hibernate/29554
+
+## 2) Cascade
+Os relacionamentos de entidade geralmente dependem da existência de outra entidade, por exemplo, o relacionamento Pessoa – Endereço . Sem Person , a entidade Address não tem significado próprio. Quando excluímos a entidade Pessoa , nossa entidade Endereço também deve ser excluída.
+
+Cascading é a maneira de conseguir isso. Quando realizamos alguma ação na entidade alvo, a mesma ação será aplicada à entidade associada.
+
+Tipos:
+- PERSIST: Ele propaga a operação de persistir um objeto Pai para um objeto Filho, assim quando salvar a Entidade Cliente, também será salvo todas as Entidades Telefone associadas.
+
+- MERGE: Ele propaga a operação de atualização de um objeto Pai para um objeto Filho, assim quando atualizadas as informações da Entidade Cliente, também será atualizado no banco de dados todas as informações das Entidades Telefone associadas.
+
+- REMOVE: Ele propaga a operação de remoção de um objeto Pai para um objeto Filho, assim quando remover a Entidade Cliente, também será removida todas as entidades Telefone associadas.
+
+- REFRESH: Ele propaga a operação de recarregar de um objeto Pai para um objeto Filho, assim, quando houver atualização no banco de dados na Entidade Cliente, todas as entidades Telefone associadas serão recarregadas do banco de dados.
+
+- ALL: Corresponde a todas as operações acima (MERGE, PERSIST, REFRESH e REMOVE).
+
+- DETACH: "A operação de desanexação remove a entidade do contexto persistente. Quando usamos CascaseType.DETACH, a entidade filha também é removida do contexto persistente".
+
+fontes: 
+
+    https://cursos.alura.com.br/forum/topico-quando-usar-cascadetype-e-qual-a-diferenca-entre-all-persist-merge-remove-refresh-detach-110962
+	
+    https://www.baeldung.com/jpa-cascade-types
+
+## 3) Optional
+Esse recurso ajuda a diminuir a quantidade de NullPointerException na aplicação/API por causa da possibilidade de trabalhar com objetos sem valor.
+
+Onde evitar usar o Optional?
+A JSR-335 não recomenda a utilização do recurso nos contextos abaixo:
+
+- Como atributo da sua entidade (lembre-se ele não é serializável);
+- Como atributo do seu DTO (lembre-se ele não é serializável);
+- Como parâmetro das suas funções;
+- Como parâmetro nos construtores.
+
+Exemplo: 
+
+    Não se deve utilizá-lo como atributo de uma classe devido a recomendação acima, mas pode-se utilizá-lo como tipo de retorno do método get().
+
+fonte: 
+
+    https://imasters.com.br/back-end/como-usar-o-optional-do-java-8-com-jpa-hibernate
